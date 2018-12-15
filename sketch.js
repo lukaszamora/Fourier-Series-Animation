@@ -1,30 +1,54 @@
 let time = 0;
 let wave = [];
 
+let nslider;
+let rslider;
+
 function setup() {
-    createCanvas(600, 400);
+    createCanvas(900, 500);
+    nslider = createSlider(1, 100, 1);
+    rslider = createSlider(50, 130, 15);
+
 }
 
 
 function draw() {
     background(0);
-    translate(200, 200);
+    translate(175, 200);
 
-    let radius = 100;
+    let x = 0;
+    let y = 0;
 
-    stroke(255);
-    noFill();
-    ellipse(0, 0, radius * 2);
+    for (let i = 0; i < nslider.value(); i++) {
+        let prevx = x;
+        let prevy = y;
 
-    let x = radius * cos(time);
-    let y = radius * sin(time);
+        let n = (2 * i) + 1;
+        let radius = rslider.value() * (4 / (n * PI));
+        x += radius * cos(n * time);
+        y += radius * sin(n * time);
+
+
+
+        stroke(255, 100);
+        noFill();
+        ellipse(prevx, prevy, radius * 2);
+
+
+        //fill(255);
+        stroke(255);
+        line(prevx, prevy, x, y);
+        //ellipse(x, y, 8);
+
+
+
+
+    }
     wave.unshift(y);
-    fill(255);
-    line(0, 0, x, y);
-    ellipse(x, y, 8);
-
     translate(200, 0);
     line(x - 200, y, 0, wave[0]);
+
+
     beginShape();
     noFill();
     for (let i = 0; i < wave.length; i++) {
@@ -33,9 +57,9 @@ function draw() {
     endShape();
 
 
-    time += 0.03;
+    time += 0.05;
 
-    if (wave.length > 250) {
+    if (wave.length > 600) {
         wave.pop();
     }
 }
